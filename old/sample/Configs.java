@@ -6,5 +6,4 @@ public class Configs {
     protected String dbUser = "root";
     protected String dbPass = "1610";
     protected String dbName = "chat";
-
 }

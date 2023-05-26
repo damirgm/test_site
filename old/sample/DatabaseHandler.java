@@ -26,5 +26,4 @@ public class DatabaseHandler extends Configs {
         
         return dbConnection;
     }
-
 }
