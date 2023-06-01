@@ -1,29 +1,15 @@
 package com.server.demo;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.*;
-
-@Entity
 public class Chat {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
 
-    @ManyToMany(mappedBy = "chats")
-    private List<User> users = new ArrayList<>();
-
-    @OneToMany(mappedBy = "chat")
-    private List<Message> messages = new ArrayList<>();
-
-    private boolean isDeleted = false;
-
-    public Chat() {
+    public Chat(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    // getters and setters
     public Long getId() {
         return id;
     }
@@ -32,27 +18,11 @@ public class Chat {
         this.id = id;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public String getName() {
+        return name;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
+    public void setName(String name) {
+        this.name = name;
     }
 }

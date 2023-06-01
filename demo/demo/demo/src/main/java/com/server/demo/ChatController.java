@@ -1,40 +1,45 @@
 package com.server.demo;
 
-import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import spark.Request;
+import spark.Response;
+import spark.template.mustache.MustacheTemplateEngine;
 
-import java.util.List;
 
-@RestController
-@RequestMapping("/api/chats")
+import java.util.HashMap;
+import java.util.Map;
+
 public class ChatController {
-    
-    @Autowired
-    private ChatService chatService;
+    private ChatRepository chatRepository;
 
-    @GetMapping("/{id}")
-    public Chat getById(@PathVariable Long id) {
-        return chatService.findById(id);
+    public ChatController(ChatRepository chatRepository) {
+        this.chatRepository = chatRepository;
     }
 
-    @PostMapping("/")
-    public Chat save(@RequestBody Chat chat) {
-        return chatService.save(chat);
+    public String index(Request request, Response response) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("chats", chatRepository.findAll());
+        return new MustacheTemplateEngine().render(new ModelAndView(model, "index.mustache"));
     }
 
-    @PutMapping("/{id}")
-    public Chat update(@PathVariable Long id, @RequestBody Chat chat) {
-        chat.setId(id);
-        return chatService.save(chat);
-    }
-    
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        chatService.delete(id);
+    public String show(Request request, Response response) {
+        Long id = Long.parseLong(request.params("id"));
+        Map<String, Object> model = new HashMap<>();
+        model.put("chat", chatRepository.findById(id));
+        return new MustacheTemplateEngine().render(new ModelAndView(model, "show.mustache"));
     }
 
-    @GetMapping("/")
-    public List<Chat> getAll() {
-        return chatService.findAll();
+    public String create(Request request, Response response) {
+        String name = request.queryParams("name");
+        Chat chat = new Chat(null, name);
+        chatRepository.save(chat);
+        response.redirect("/chats/" + chat.getId());
+        return "";
+    }
+
+    public String delete(Request request, Response response) {
+        Long id = Long.parseLong(request.params("id"));
+        chatRepository.delete(id);
+        response.redirect("/chats");
+        return "";
     }
 }
