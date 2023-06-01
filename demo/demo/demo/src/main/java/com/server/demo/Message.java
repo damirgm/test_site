@@ -1,26 +1,40 @@
 package com.server.demo;
 
-@Entity
+import java.sql.Timestamp;
+
 public class Message {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "chat_id")
-    private Chat chat;
-    
     private String text;
+    private Timestamp timestamp;
 
-    private boolean isDeleted = false;
+    public Message(Long id, String text, Timestamp timestamp) {
+        this.id = id;
+        this.text = text;
+        this.timestamp = timestamp;
+    }
 
-    public Message() {}
+    public Long getId() {
+        return id;
+    }
 
-    // getters and setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
 }
-
